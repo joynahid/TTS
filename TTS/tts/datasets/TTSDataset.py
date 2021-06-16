@@ -115,7 +115,7 @@ class MyDataset(Dataset):
         file_name_ext = "_blanked_phoneme.npy" if add_blank else "_phoneme.npy"
         cache_path = os.path.join(phoneme_cache_path, file_name + file_name_ext)
         try:
-            phonemes = np.load(cache_path)
+            phonemes = np.load(cache_path, allow_pickle=True)
         except FileNotFoundError:
             phonemes = MyDataset._generate_and_cache_phoneme_sequence(
                 text, cache_path, cleaners, language, tp, add_blank
@@ -217,7 +217,7 @@ class MyDataset(Dataset):
             ]
             if self.verbose:
                 print(" | > Computing phonemes ...")
-            if num_workers == 0:
+            if True:
                 for idx, item in enumerate(tqdm.tqdm(self.items)):
                     phonemes = self._phoneme_worker([item, func_args])
                     self.items[idx][0] = phonemes
